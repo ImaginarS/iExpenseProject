@@ -65,7 +65,6 @@ struct ContentView: View {
         }
         return .clear
     }
-    
 }
 
 class Expenses: ObservableObject {
