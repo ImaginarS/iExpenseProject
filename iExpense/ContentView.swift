@@ -13,6 +13,7 @@ struct ExpenseItem: Identifiable, Codable {
     let amount: Int
     let id = UUID()
 }
+
 struct ContentView: View {
     @ObservedObject var expenses = Expenses()
     @State private var showingAddExpense = false
@@ -27,10 +28,13 @@ struct ContentView: View {
                             Text(item.name)
                                 .font(.headline)
                             Text(item.type)
+                            
                         }
                         Spacer()
                         Text("$ \(item.amount)")
+                        
                     }
+                    .background(detemineBackgroundColor(amount: item.amount))
                 }
                 .onDelete(perform: removeItems(at:))
             }
@@ -41,9 +45,7 @@ struct ContentView: View {
                                     }, label: {
                                         Image(systemName: "plus")
                                     })
-                                    )
-
-            
+            )
             .sheet(isPresented: $showingAddExpense) {
                 //show an addview here
                 AddView(expensess: self.expenses)
@@ -53,6 +55,17 @@ struct ContentView: View {
     func removeItems(at offsets: IndexSet) {
         expenses.items.remove(atOffsets: offsets)
     }
+    func detemineBackgroundColor(amount: Int) -> Color {
+        if amount < 10 {
+            return .pink
+        } else if amount < 100 {
+            return .yellow
+        } else {
+            return .purple
+        }
+        return .clear
+    }
+    
 }
 
 class Expenses: ObservableObject {
